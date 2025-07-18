@@ -7,6 +7,8 @@ import Settings from './components/Settings';
 import userAvatar from './assets/user-avatar.svg';
 import botAvatar from './assets/bot-avatar.svg';
 
+const BACKEND_BASE_URL = process.env.REACT_APP_BACKEND_BASE_URL || 'http://localhost:8002/';
+console.log("Backend URL:", BACKEND_BASE_URL);
 function App() {
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
@@ -59,12 +61,29 @@ function App() {
     setInputMessage('');
     setSelectedFile(null);
   };
+  const handleSetSettings = async(newSettings) => {
+    setSettings(newSettings);
+    document.documentElement.style.setProperty('--primary-color', newSettings.theme.colors.primary);
+    document.documentElement.style.setProperty('--secondary-color', newSettings.theme.colors.secondary);
+    if (newSettings.llm !== settings.llm) {
+      setMessages([]);
+      setInputMessage('');
+      setSelectedFile(null);
+      const payload = JSON.stringify({
+        model: newSettings.llm
+      })
+      const response = await fetch(BACKEND_BASE_URL + 'change_ai_model', {
+        method: 'POST',
+        body: payload
+      });
+    }
+  } 
   const handleNewSession= async() => {
     console.log("New session started");
     const payload = JSON.stringify({
         message: ""
       })
-      const response = await fetch('http://localhost:8000/new_chat', {
+      const response = await fetch(BACKEND_BASE_URL + 'new_chat', {
         method: 'POST',
         body: payload
       });
@@ -109,7 +128,7 @@ function App() {
       const payload = JSON.stringify({
         message: inputMessage
       })
-      const response = await fetch('http://localhost:8000/chat', {
+      const response = await fetch(BACKEND_BASE_URL + 'chat', {
         method: 'POST',
         body: payload//formData
       });
@@ -194,7 +213,7 @@ function App() {
               onChange={handleFileChange}
               style={{ display: 'none' }}
             />
-            <span className="upload-icon">🆕</span>
+            
           </label>
           <input
             type="text"
@@ -211,7 +230,7 @@ function App() {
         isOpen={isSettingsOpen}
         onClose={() => setIsSettingsOpen(false)}
         settings={settings}
-        onSettingsChange={setSettings}
+        onSettingsChange={handleSetSettings}
       />
     </div>
   );

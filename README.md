@@ -59,7 +59,7 @@ GOOGLE_GENAI_USE_VERTEXAI=FALSE
 GOOGLE_API_KEY=your_secret_key
 ```
 
-### Running the Application(Frontend and backend separatly)
+### Running the Application(Frontend and backend separately)
 
 1. Start the backend server:
 ```bash
@@ -85,6 +85,29 @@ npm run build
 uvicorn app:app --reload
 ```
 3. Open your browser and navigate to `http://localhost:8000`
+
+### Running the Application from Docker
+
+1. Pull and run from Docker Hub:
+```bash
+docker run -d -p 8000:8080 --name my-server3 -e GOOGLE_API_KEY=<Your Gemini Key> bcheng33/gcp-chatbot-image:latest
+```
+
+### Running the Application from GCP Cloud Run
+
+1. Pull and run from Docker Hub:
+```bash
+gcloud auth login
+gcloud config set project YOUR_PROJECT_ID
+gcloud run deploy chat-service \
+  --image docker.io/bcheng33/gcp-chatbot-image:latest \
+  --region us-central1 \
+  --platform managed \
+  --allow-unauthenticated
+```
+Then setup environment variables in Cloud Run:
+GOOGLE_API_KEY=<Your Gemini Key>
+REACT_APP_BACKEND_BASE_URL=<Cloud Run App Url>
 
 ## Usage
 

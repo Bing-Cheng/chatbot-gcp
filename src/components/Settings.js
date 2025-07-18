@@ -3,6 +3,7 @@ import './Settings.css';
 
 const Settings = ({ isOpen, onClose, settings, onSettingsChange }) => {
   const llmOptions = [
+    { id: 'gemini-2.0-flash', name: 'Gemini 2.0 flash' },
     { id: 'gemini-2.5-flash', name: 'Gemini 2.5 flash' }
   ];
 

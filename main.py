@@ -39,11 +39,6 @@ USER_ID = "fastapi_user" # Changed for FastAPI context
 SESSION_ID_PRE = "fastapi_session"
 
 
-runner = Runner(
-    agent=host_agent,
-    app_name="host_app",
-    session_service=session_service,
-)
 
 async def setup_session():
     """
@@ -69,7 +64,9 @@ async def get_chatbot_response(prompt: str) -> str:
     message = types.Content(role="user", parts=[types.Part(text=prompt)])
 
     try:
-        async for event in runner.run_async(
+        llm_model = app.state.runner.agent.model
+        print(f"Using LLM model: {llm_model}")
+        async for event in app.state.runner.run_async(
             user_id=USER_ID, session_id=app.state.SESSION_ID, new_message=message
         ):
             if event.is_final_response():
@@ -97,6 +94,11 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+)
+app.state.runner = Runner(
+    agent=host_agent,
+    app_name="host_app",
+    session_service=session_service,
 )
 
 @app.get("/{full_path:path}")
@@ -131,6 +133,21 @@ async def change_ai_model(request: Request):
     data = await request.json()
     ai_model = data.get("model", "")
     print("ai_model:", ai_model)
+    host_agent = LlmAgent(
+        name="host_agent",
+        model=ai_model,
+        description="A friendly chatbot host.",
+        instruction=(
+            "You are the host agent responsible for chatting with the user. "
+            "Keep your responses concise, friendly, and helpful."
+        ),
+    )
+
+    app.state.runner = Runner(
+        agent=host_agent,
+        app_name="host_app",
+        session_service=session_service,
+    )
     return JSONResponse({"response": "AI model changed successfully."})
 
 
