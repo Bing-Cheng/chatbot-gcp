@@ -7,8 +7,6 @@ import Settings from './components/Settings';
 import userAvatar from './assets/user-avatar.svg';
 import botAvatar from './assets/bot-avatar.svg';
 
-const BACKEND_BASE_URL = process.env.REACT_APP_BACKEND_BASE_URL || 'http://localhost:8002/';
-console.log("Backend URL:", BACKEND_BASE_URL);
 function App() {
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
@@ -72,7 +70,7 @@ function App() {
       const payload = JSON.stringify({
         model: newSettings.llm
       })
-      const response = await fetch(BACKEND_BASE_URL + 'change_ai_model', {
+      const response = await fetch('/change_ai_model', {
         method: 'POST',
         body: payload
       });
@@ -83,7 +81,7 @@ function App() {
     const payload = JSON.stringify({
         message: ""
       })
-      const response = await fetch(BACKEND_BASE_URL + 'new_chat', {
+      const response = await fetch('/new_chat', {
         method: 'POST',
         body: payload
       });
@@ -128,7 +126,7 @@ function App() {
       const payload = JSON.stringify({
         message: inputMessage
       })
-      const response = await fetch(BACKEND_BASE_URL + 'chat', {
+      const response = await fetch('/chat', {
         method: 'POST',
         body: payload//formData
       });
