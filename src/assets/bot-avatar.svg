@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Circle -->
+  <circle cx="100" cy="100" r="100" fill="url(#gradient2)"/>
+  
+  <!-- Robot Head -->
+  <rect x="50" y="50" width="100" height="100" rx="20" fill="white"/>
+  
+  <!-- Eyes -->
+  <circle cx="70" cy="90" r="10" fill="#00b4db"/>
+  <circle cx="130" cy="90" r="10" fill="#00b4db"/>
+  
+  <!-- Antenna -->
+  <line x1="100" y1="50" x2="100" y2="30" stroke="white" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="100" cy="30" r="8" fill="white"/>
+  
+  <!-- Mouth -->
+  <path d="M70 120C70 120 85 140 100 140C115 140 130 120 130 120" stroke="#00b4db" stroke-width="8" stroke-linecap="round"/>
+  
+  <!-- Circuit Lines -->
+  <path d="M60 70L80 70" stroke="#00b4db" stroke-width="4" stroke-linecap="round"/>
+  <path d="M120 70L140 70" stroke="#00b4db" stroke-width="4" stroke-linecap="round"/>
+  
+  <!-- Gradient Definition -->
+  <defs>
+    <linearGradient id="gradient2" x1="0" y1="0" x2="200" y2="200" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#00b4db"/>
+      <stop offset="100%" stop-color="#0083b0"/>
+    </linearGradient>
+  </defs>
+</svg> 
